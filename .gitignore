@@ -1,0 +1,33 @@
+#IntelliJ IDEA#
+###############
+*.iml
+*.ipr
+*.iws
+.idea
+target
+classes
+captures/*
+
+#Eclipse#
+#########
+.settings
+.classpath
+.project
+local.properties
+
+#Gradle#
+#########
+.gradle
+build/*
+*/build/*
+
+# Various file OS based formats#
+################################
+*Thumbs.db
+*.swp
+.DS_STORE
+lint-report.xml
+*.log
+
+# trace files
+*.trace

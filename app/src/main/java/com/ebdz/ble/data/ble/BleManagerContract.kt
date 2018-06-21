@@ -10,4 +10,5 @@ interface BleManagerContract {
     fun startScan()
     fun stopScan()
     fun isScanning(): Boolean
+
 }

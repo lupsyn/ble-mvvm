@@ -7,22 +7,30 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.provider.Settings
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.ebdz.ble.R
-import com.ebdz.ble.data.ble.model.BleDevice
+import com.ebdz.ble.data.Resource
+import com.ebdz.ble.data.ble.model.BleDeviceContainer
 import com.ebdz.ble.ui.utils.RecyclerViewAdapter
 import com.tbruyelle.rxpermissions2.RxPermissions
 import dagger.android.AndroidInjection
+import de.mateware.snacky.Snacky
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.view_ble_device.view.*
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), MainView {
@@ -30,6 +38,8 @@ class MainActivity : AppCompatActivity(), MainView {
     lateinit var fab: FloatingActionButton
     @BindView(R.id.toolbar)
     lateinit var toolbar: Toolbar
+    @BindView(R.id.progress_bar)
+    lateinit var progressBar: ProgressBar
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -39,6 +49,8 @@ class MainActivity : AppCompatActivity(), MainView {
     private val lifecycleRegistry = LifecycleRegistry(this)
     private var mainViewModel: MainViewModel? = null
     private var rxPermissions: RxPermissions? = null
+    private var positionItemClicked: Int = -1
+    private lateinit var adapter: RecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -48,6 +60,12 @@ class MainActivity : AppCompatActivity(), MainView {
         initRxPermissions()
         initViews()
         initViewModel()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        // Item clicked and ble found should be saved and restored into the bundle if the activity is destroyed
+        // outState?.putInt("POSITION_ITEM_CLICKED", positionItemClicked)
     }
 
     private fun initRxPermissions() {
@@ -61,7 +79,13 @@ class MainActivity : AppCompatActivity(), MainView {
             mainViewModel?.toggleScan()
         }
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = RecyclerViewAdapter(ArrayList())
+        adapter = RecyclerViewAdapter(ArrayList())
+        recyclerView.adapter = adapter
+
+        (recyclerView.adapter as RecyclerViewAdapter).onItemClick().subscribe {
+            mainViewModel?.createConnection(it.first)
+            positionItemClicked = it.second
+        }
     }
 
     private fun initViewModel() {
@@ -69,7 +93,8 @@ class MainActivity : AppCompatActivity(), MainView {
 
         mainViewModel!!.mReason.observe(this, Observer<Int> { reason -> binder.bindError(reason!!) })
         mainViewModel!!.mScanning.observe(this, Observer<Boolean> { status -> binder.bindStatus(status!!) })
-        mainViewModel!!.bleDeviceList.observe(this, Observer<MutableList<BleDevice>> { binder.bindResult(it!!) })
+        mainViewModel!!.bleDeviceContainerList.observe(this, Observer<MutableList<BleDeviceContainer>> { binder.bindResult(it!!) })
+        mainViewModel!!.mBleConnected.observe(this, Observer<Resource<String>> { binder.bindBleConnection(it!!) })
     }
 
     private fun onPermissionChanged(granted: Boolean?) {
@@ -87,7 +112,7 @@ class MainActivity : AppCompatActivity(), MainView {
         return lifecycleRegistry
     }
 
-    override fun updateResults(results: List<BleDevice>) {
+    override fun updateResults(results: List<BleDeviceContainer>) {
         (recyclerView.adapter as RecyclerViewAdapter).addItems(results)
     }
 
@@ -111,12 +136,27 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun displayError(errorMessage: String) {
+        Snacky.builder().setActivity(this).setText(errorMessage).build().show()
+    }
+
+    override fun displayToastError(errorMessage: String) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+    }
+
+    override fun changeConnection(connection: Boolean) {
+        recyclerView.findViewHolderForAdapterPosition(positionItemClicked).itemView.card_view.setCardBackgroundColor(if (connection) Color.RED else Color.TRANSPARENT)
+    }
+
+    override fun showProgressBar(visibility: Boolean) {
+        progressBar.visibility = if (visibility) View.VISIBLE else View.GONE
+    }
+
+    override fun setFabClickable(value: Boolean) {
+        fab.isClickable = value
     }
 
     companion object {
         private val PERMISSION_TAG = "RxPermissions"
         private val TAG = MainActivity::class.java.simpleName
     }
-
 }

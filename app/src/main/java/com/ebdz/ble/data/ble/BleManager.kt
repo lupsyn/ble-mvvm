@@ -47,7 +47,7 @@ class BleManager @Inject constructor(
     }
 
     private fun onDoOnDispose() {
-        rxRelay.accept(Resource.StoppingResource())
+        rxRelay.accept(Resource.Stopped())
     }
 
     fun onDoOnSubscribe() {

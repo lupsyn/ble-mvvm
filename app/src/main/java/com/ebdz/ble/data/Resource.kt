@@ -8,11 +8,15 @@ import android.support.annotation.StringRes
 sealed class Resource<out T>(val data: T? = null) {
     class StartingResource<out T> : Resource<T>()
 
-    class StoppingResource<out T> : Resource<T>()
+    class Stopped<out T> : Resource<T>()
+
+    class Stopping<out T> : Resource<T>()
 
     class SuccessResource<out T>(data: T) : Resource<T>(data)
 
     data class ErrorResource<out T>(@StringRes val errorMessage: Int) : Resource<T>()
+
+    data class ErrorResourceString<out T>(@StringRes val errorMessage: String) : Resource<T>()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
