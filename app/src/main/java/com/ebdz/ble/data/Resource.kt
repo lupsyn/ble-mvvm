@@ -14,6 +14,8 @@ sealed class Resource<out T>(val data: T? = null) {
 
     class SuccessResource<out T>(data: T) : Resource<T>(data)
 
+    class SuccessResourceString<out T>(@StringRes val message: String) : Resource<T>()
+
     data class ErrorResource<out T>(@StringRes val errorMessage: Int) : Resource<T>()
 
     data class ErrorResourceString<out T>(@StringRes val errorMessage: String) : Resource<T>()

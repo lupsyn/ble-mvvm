@@ -108,7 +108,7 @@ class MainViewModel @Inject constructor(
 
     fun onConnectionReceived(connection: RxBleConnection) {
         //Connection estabilished.
-        mBleConnected.value = Resource.SuccessResource("Connection received")
+        mBleConnected.value = Resource.SuccessResourceString("Connection received")
     }
 
     fun onConnectionReceivedThrowable(throwable: Throwable) {

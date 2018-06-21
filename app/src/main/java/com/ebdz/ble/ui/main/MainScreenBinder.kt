@@ -66,13 +66,13 @@ class MainScreenBinder @Inject constructor(private val view: MainView) {
             is Resource.SuccessResource -> {
                 view.setFabClickable(true)
                 view.showProgressBar(false)
-                view.displayError("Connected to " + resource.data!!)
+                view.displayError(resource.data!!)
             }
 
             is Resource.Stopping -> {
                 view.setFabClickable(true)
                 view.showProgressBar(false)
-                view.displayError("Disconnecting...")
+                view.displayToastError("Disconnecting...")
             }
             is Resource.Stopped -> {
                 view.setFabClickable(true)
@@ -85,6 +85,11 @@ class MainScreenBinder @Inject constructor(private val view: MainView) {
                 view.changeConnection(false)
                 view.showProgressBar(false)
                 view.displayToastError(resource.errorMessage)
+            }
+            is Resource.SuccessResourceString -> {
+                view.setFabClickable(true)
+                view.showProgressBar(false)
+                view.displayToastError(resource.message)
             }
         }
     }
