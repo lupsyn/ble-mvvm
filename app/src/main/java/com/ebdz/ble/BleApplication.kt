@@ -11,7 +11,7 @@ import dagger.android.HasActivityInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-class BleApplication : Application(), HasActivityInjector, HasSupportFragmentInjector {
+open class BleApplication : Application(), HasActivityInjector, HasSupportFragmentInjector {
     @Inject
     lateinit var activityInjector: DispatchingAndroidInjector<Activity>
 

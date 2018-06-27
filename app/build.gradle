@@ -12,12 +12,20 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.ebdz.ble.TestInstrumentationRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    configurations.all {
+        exclude module: 'commons-logging'
+
+        resolutionStrategy {
+            force "com.android.support:support-annotations:$support_version"
+            force "com.android.support:support-v4:$support_version"
         }
     }
 }
@@ -32,6 +40,17 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    androidTestImplementation "com.android.support.test:runner:$androidTestRunner_version"
+    androidTestImplementation "com.android.support.test:rules:$androidTestRules_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
+
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$espresso_version"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver_version"
+
+    testImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "junit:junit:$junit_version"
+
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation "com.android.support:support-v4:$support_version"
     implementation "com.android.support:design:$support_version"
@@ -46,13 +65,12 @@ dependencies {
     implementation "com.jakewharton.rxrelay2:rxrelay:$rx_relay_version"
     implementation "com.polidea.rxandroidble2:rxandroidble:$rx_androidble2"
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
-    implementation 'com.github.matecode:Snacky:1.0.3'
-    testImplementation 'junit:junit:4.12'
+    implementation "com.github.matecode:Snacky:$snacky_version"
+
     implementation("com.google.dagger:dagger:$dagger_version",
             "com.google.dagger:dagger-android:$dagger_version",
             "com.google.dagger:dagger-android-support:$dagger_version"
     )
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
-
 }
