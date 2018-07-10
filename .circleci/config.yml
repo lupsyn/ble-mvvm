@@ -13,10 +13,6 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          name: remove local settings
-          command: rm local.properties
-
       # Restore cached dependencies (if any)
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
