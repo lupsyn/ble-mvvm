@@ -1,9 +1,10 @@
 package com.ebdz.ble.ui.main
 
+import android.support.annotation.StringRes
 import com.ebdz.ble.data.ble.model.BleDeviceContainer
 
 interface MainView {
-    fun displayError(errorMessage: String)
+
     fun toggle(visible: Boolean)
     fun updateResults(results: List<BleDeviceContainer>)
     fun startEnableBtIntent()
@@ -11,6 +12,9 @@ interface MainView {
     fun enableLocationServices()
     fun changeConnection(connection: Boolean)
     fun showProgressBar(visibility: Boolean)
-    fun displayToastError(errorMessage: String)
+    fun displayToastStringRes(@StringRes errorMessage: Int)
     fun setFabClickable(value: Boolean)
+    fun displayToast(errorMessage: String)
+    fun displayError(data: String)
+    fun displayErrorStringRes(@StringRes errorMessage: Int)
 }

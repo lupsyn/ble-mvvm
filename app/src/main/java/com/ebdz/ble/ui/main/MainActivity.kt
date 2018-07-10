@@ -134,13 +134,6 @@ class MainActivity : AppCompatActivity(), MainView {
         fab.setImageResource(if (visible) android.R.drawable.ic_media_pause else android.R.drawable.ic_media_play)
     }
 
-    override fun displayError(errorMessage: String) {
-        Snacky.builder().setActivity(this).setText(errorMessage).build().show()
-    }
-
-    override fun displayToastError(errorMessage: String) {
-        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
-    }
 
     override fun changeConnection(connection: Boolean) {
         recyclerView.findViewHolderForAdapterPosition(positionItemClicked).itemView.card_view.setCardBackgroundColor(if (connection) Color.RED else Color.TRANSPARENT)
@@ -154,8 +147,23 @@ class MainActivity : AppCompatActivity(), MainView {
         fab.isClickable = value
     }
 
+    override fun displayError(errorMessage: String) {
+        Snacky.builder().setActivity(this).setText(errorMessage).build().show()
+    }
+
+    override fun displayErrorStringRes(errorMessage: Int) {
+        Snacky.builder().setActivity(this).setText(resources.getString(errorMessage)).build().show()
+    }
+
+    override fun displayToastStringRes(errorMessage: Int) {
+        Toast.makeText(this, resources.getString(errorMessage), Toast.LENGTH_LONG).show()
+    }
+
+    override fun displayToast(errorMessage: String) {
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+    }
+
     companion object {
         private val PERMISSION_TAG = "RxPermissions"
-        private val TAG = MainActivity::class.java.simpleName
     }
 }

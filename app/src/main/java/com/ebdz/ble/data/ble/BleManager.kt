@@ -1,6 +1,5 @@
 package com.ebdz.ble.data.ble
 
-
 import com.ebdz.ble.data.Resource
 import com.ebdz.ble.di.component.NamedParams
 import com.jakewharton.rxrelay2.PublishRelay
@@ -20,8 +19,8 @@ class BleManager @Inject constructor(
         @Named(NamedParams.RX_WORKER_THREAD) private val workerThread: Scheduler
 ) : BleManagerContract {
 
-    lateinit var disposeScan: Disposable
-    var isScan: Boolean = false
+    private lateinit var disposeScan: Disposable
+    private var isScan: Boolean = false
     private var rxRelay: PublishRelay<Resource<ScanResult>> = PublishRelay.create()
 
     override fun startScan() {
@@ -50,16 +49,16 @@ class BleManager @Inject constructor(
         rxRelay.accept(Resource.Stopped())
     }
 
-    fun onDoOnSubscribe() {
+    private fun onDoOnSubscribe() {
         rxRelay.accept(Resource.StartingResource())
     }
 
-    fun onScanResult(result: ScanResult) {
+    private fun onScanResult(result: ScanResult) {
         rxRelay.accept(Resource.SuccessResource(result))
     }
 
-    fun onScanFailure(reason: Throwable) {
-        rxRelay.accept(Resource.ErrorResource((reason as BleScanException).getReason()))
+    private fun onScanFailure(reason: Throwable) {
+        rxRelay.accept(Resource.ErrorCodeId((reason as BleScanException).reason))
     }
 }
 

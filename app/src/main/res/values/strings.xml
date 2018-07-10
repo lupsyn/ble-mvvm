@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">ble</string>
     <string name="action_settings">Settings</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="disconnecting">Disconnecting...</string>
+    <string name="connecting">Connecting...</string>
+    <string name="scanning">Scanning</string>
+    <string name="stopped">Stopped</string>
+    <string name="unableToStartScanning">Unable to start scanning</string>
+    <string name="errorBluetoothNotAvailable">Bluetooth is not available</string>
+    <string name="errorBluetoothDisabled">Enable bluetooth and try again</string>
+    <string name="errorLocationPermissionMissing">On Android 6.0 location permission is required. Implement Runtime Permissions</string>
+    <string name="errorLocationDisabled">Location services needs to be enabled on Android 6.0</string>
+    <string name="errorScanFailedAlreadyStarted">Scan with the same filters is already started</string>
+    <string name="errorScanFailedApplicationRegistration">Failed to register application for bluetooth scan</string>
+    <string name="errorFeatureUnsupported">Scan with specified parameters is not supported</string>
+    <string name="errorInternal">Scan failed due to internal error</string>
+    <string name="errorOutOfHardwareResources">Scan cannot start due to limited hardware resources</string>
+    <string name="errorUnknowError">Unable to start scanning</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.ebdz.ble.ui.main
 
+import com.ebdz.ble.R
 import com.ebdz.ble.data.Resource
 import com.ebdz.ble.data.ble.model.BleDeviceContainer
 import com.polidea.rxandroidble2.exceptions.BleScanException
@@ -21,36 +22,37 @@ class MainScreenBinder @Inject constructor(private val view: MainView) {
     fun bindError(reason: Int) {
         view.showProgressBar(false)
         view.toggle(false)
-        var text = "Unable to start scanning"
+        var text = R.string.unableToStartScanning
         when (reason) {
             BleScanException.BLUETOOTH_NOT_AVAILABLE ->
-                text = "Bluetooth is not available"
+                text = R.string.errorBluetoothNotAvailable
 
             BleScanException.BLUETOOTH_DISABLED -> {
-                text = "Enable bluetooth and try again"
+                text = R.string.errorBluetoothDisabled
                 view.startEnableBtIntent()
             }
             BleScanException.LOCATION_PERMISSION_MISSING -> {
-                text = "On Android 6.0 location permission is required. Implement Runtime Permissions"
+                text = R.string.errorLocationPermissionMissing
+
                 view.askLocationPermission()
             }
             BleScanException.LOCATION_SERVICES_DISABLED -> {
-                text = "Location services needs to be enabled on Android 6.0"
+                text = R.string.errorLocationDisabled
                 view.enableLocationServices()
             }
-            BleScanException.SCAN_FAILED_ALREADY_STARTED -> text = "Scan with the same filters is already started"
-            BleScanException.SCAN_FAILED_APPLICATION_REGISTRATION_FAILED -> text = "Failed to register application for bluetooth scan"
-            BleScanException.SCAN_FAILED_FEATURE_UNSUPPORTED -> text = "Scan with specified parameters is not supported"
-            BleScanException.SCAN_FAILED_INTERNAL_ERROR -> text = "Scan failed due to internal error"
-            BleScanException.SCAN_FAILED_OUT_OF_HARDWARE_RESOURCES -> text = "Scan cannot start due to limited hardware resources"
-            BleScanException.UNKNOWN_ERROR_CODE, BleScanException.BLUETOOTH_CANNOT_START -> text = "Unable to start scanning"
+            BleScanException.SCAN_FAILED_ALREADY_STARTED -> text = R.string.errorScanFailedAlreadyStarted
+            BleScanException.SCAN_FAILED_APPLICATION_REGISTRATION_FAILED -> text = R.string.errorScanFailedApplicationRegistration
+            BleScanException.SCAN_FAILED_FEATURE_UNSUPPORTED -> text = R.string.errorFeatureUnsupported
+            BleScanException.SCAN_FAILED_INTERNAL_ERROR -> text = R.string.errorInternal
+            BleScanException.SCAN_FAILED_OUT_OF_HARDWARE_RESOURCES -> text = R.string.errorOutOfHardwareResources
+            BleScanException.UNKNOWN_ERROR_CODE, BleScanException.BLUETOOTH_CANNOT_START -> text = R.string.errorUnknowError
         }
-        view.displayError(text)
+        view.displayErrorStringRes(text)
     }
 
     fun bindStatus(status: Boolean) {
         view.showProgressBar(status)
-        view.displayError(if (status) "Scanning" else "Stopped")
+        view.displayErrorStringRes(if (status) R.string.scanning else R.string.stopped)
         view.toggle(status)
     }
 
@@ -61,7 +63,7 @@ class MainScreenBinder @Inject constructor(private val view: MainView) {
                 view.setFabClickable(false)
                 view.showProgressBar(true)
                 view.changeConnection(true)
-                view.displayError("Connecting...")
+                view.displayErrorStringRes(R.string.connecting)
             }
             is Resource.SuccessResource -> {
                 view.setFabClickable(true)
@@ -72,24 +74,24 @@ class MainScreenBinder @Inject constructor(private val view: MainView) {
             is Resource.Stopping -> {
                 view.setFabClickable(true)
                 view.showProgressBar(false)
-                view.displayToastError("Disconnecting...")
+                view.displayToastStringRes(R.string.disconnecting)
             }
             is Resource.Stopped -> {
                 view.setFabClickable(true)
                 view.changeConnection(false)
                 view.showProgressBar(false)
-                view.displayError("Disconnected")
+                view.displayErrorStringRes(R.string.disconnected)
             }
             is Resource.ErrorResourceString -> {
                 view.setFabClickable(true)
                 view.changeConnection(false)
                 view.showProgressBar(false)
-                view.displayToastError(resource.errorMessage)
+                view.displayToast(resource.errorMessage)
             }
             is Resource.SuccessResourceString -> {
                 view.setFabClickable(true)
                 view.showProgressBar(false)
-                view.displayToastError(resource.message)
+                view.displayToast(resource.message)
             }
         }
     }

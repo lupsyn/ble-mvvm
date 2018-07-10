@@ -1,7 +1,5 @@
 package com.ebdz.ble.data
 
-import android.support.annotation.StringRes
-
 /**
  * A generic class that describes data with a status.
  */
@@ -14,11 +12,11 @@ sealed class Resource<out T>(val data: T? = null) {
 
     class SuccessResource<out T>(data: T) : Resource<T>(data)
 
-    class SuccessResourceString<out T>(@StringRes val message: String) : Resource<T>()
+    class SuccessResourceString<out T>(val message: String) : Resource<T>()
 
-    data class ErrorResource<out T>(@StringRes val errorMessage: Int) : Resource<T>()
+    data class ErrorCodeId<out T>(val errorCode: Int) : Resource<T>()
 
-    data class ErrorResourceString<out T>(@StringRes val errorMessage: String) : Resource<T>()
+    data class ErrorResourceString<out T>(val errorMessage: String) : Resource<T>()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

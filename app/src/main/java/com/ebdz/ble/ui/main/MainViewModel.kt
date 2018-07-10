@@ -59,8 +59,8 @@ class MainViewModel @Inject constructor(
             is Resource.Stopped -> {
                 mScanning.value = false
             }
-            is Resource.ErrorResource -> {
-                mReason.value = resource.errorMessage
+            is Resource.ErrorCodeId -> {
+                mReason.value = resource.errorCode
             }
             is Resource.StartingResource -> {
                 mScanning.value = true
