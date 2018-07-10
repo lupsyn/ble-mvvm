@@ -16,7 +16,8 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.subjects.PublishSubject
 
-class RecyclerViewAdapter(private val mDeviceContainerList: MutableList<BleDeviceContainer>) : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
+class RecyclerViewAdapter(private val mDeviceContainerList: MutableList<BleDeviceContainer>) :
+        RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
 
     private val clickSubject = PublishSubject.create<Pair<RxBleDevice, Int>>()
 
@@ -25,7 +26,10 @@ class RecyclerViewAdapter(private val mDeviceContainerList: MutableList<BleDevic
         val recyclerViewHolder = RecyclerViewHolder(LayoutInflater.from(parent.context)
                 .inflate(R.layout.view_ble_device, parent, false))
         recyclerViewHolder.itemView.setOnClickListener {
-            clickSubject.onNext(Pair(mDeviceContainerList[recyclerViewHolder.adapterPosition].bleDevice, recyclerViewHolder.adapterPosition))
+            clickSubject.onNext(Pair(
+                    mDeviceContainerList[recyclerViewHolder.adapterPosition].bleDevice,
+                    recyclerViewHolder.adapterPosition
+            ))
         }
         return recyclerViewHolder
     }

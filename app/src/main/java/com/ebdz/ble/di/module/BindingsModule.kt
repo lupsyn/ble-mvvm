@@ -7,8 +7,6 @@ import dagger.Module
 
 @Module
 abstract class BindingsModule {
-
     @Binds
     abstract fun provideBleManager(bleManger: BleManager): BleManagerContract
-
 }

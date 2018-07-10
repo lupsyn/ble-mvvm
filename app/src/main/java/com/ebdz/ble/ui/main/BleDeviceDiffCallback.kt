@@ -25,5 +25,4 @@ class BleDeviceDiffCallback(private val oldDeviceContainers: List<BleDeviceConta
                 && newProduct.name == oldProduct.name
                 && newProduct.rssi == oldProduct.rssi)
     }
-
 }

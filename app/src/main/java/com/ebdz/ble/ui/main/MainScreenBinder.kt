@@ -97,3 +97,4 @@ class MainScreenBinder @Inject constructor(private val view: MainView) {
     }
 
 }
+

@@ -106,6 +106,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun onConnectionReceived(connection: RxBleConnection) {
         //Connection estabilished.
         mBleConnected.value = Resource.SuccessResourceString("Connection received")

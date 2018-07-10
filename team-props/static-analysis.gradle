@@ -1,0 +1,15 @@
+apply plugin: 'com.novoda.static-analysis'
+
+staticAnalysis {
+    penalty {
+        maxErrors = 0
+        maxWarnings = 0
+    }
+    
+    lintOptions {
+        lintConfig teamPropsFile('static-analysis/lint-config.xml')
+        warningsAsErrors true
+    }
+}
+
+apply from: teamPropsFile('ktlint.gradle')

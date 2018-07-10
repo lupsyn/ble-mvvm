@@ -8,7 +8,6 @@ import javax.inject.Singleton
 
 @Module
 class BleModule {
-
     @Singleton
     @Provides
     fun provideRxBleClient(application: BleApplication): RxBleClient {

@@ -136,7 +136,9 @@ class MainActivity : AppCompatActivity(), MainView {
 
 
     override fun changeConnection(connection: Boolean) {
-        recyclerView.findViewHolderForAdapterPosition(positionItemClicked).itemView.card_view.setCardBackgroundColor(if (connection) Color.RED else Color.TRANSPARENT)
+        recyclerView.findViewHolderForAdapterPosition(positionItemClicked).let {
+            it.let { it?.itemView?.card_view?.setCardBackgroundColor(if (connection) Color.RED else Color.TRANSPARENT) }
+        }
     }
 
     override fun showProgressBar(visibility: Boolean) {
@@ -147,8 +149,8 @@ class MainActivity : AppCompatActivity(), MainView {
         fab.isClickable = value
     }
 
-    override fun displayError(errorMessage: String) {
-        Snacky.builder().setActivity(this).setText(errorMessage).build().show()
+    override fun displayError(data: String) {
+        Snacky.builder().setActivity(this).setText(data).build().show()
     }
 
     override fun displayErrorStringRes(errorMessage: Int) {
@@ -164,6 +166,6 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     companion object {
-        private val PERMISSION_TAG = "RxPermissions"
+        private const val PERMISSION_TAG = "RxPermissions"
     }
 }

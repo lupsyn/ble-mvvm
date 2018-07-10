@@ -3,13 +3,15 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply from: "$rootDir/dependencies.gradle"
+apply plugin: 'com.novoda.static-analysis'
+apply plugin: 'io.gitlab.arturbosch.detekt'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.ebdz.ble"
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "com.ebdz.ble.TestInstrumentationRunner"
@@ -33,6 +35,25 @@ android {
 
 androidExtensions {
     experimental = true
+}
+
+detekt {
+    profile = 'main'
+
+    profile('main') {
+        input = "$projectDir/src/main/java"
+        config = teamPropsFile('static-analysis/detekt-config.yml')
+        filters = '.*test.*,.*/resources/.*,.*/tmp/.*'
+        output = "$projectDir/build/reports/detekt"
+    }
+
+    idea {
+        path = "$rootDir/.idea"
+        codeStyleScheme = "$rootDir/.idea/codeStyles/Project.xml"
+        inspectionsProfile = "$rootDir/.idea/inspectionProfiles/Squanchy.xml"
+        report = "$projectDir/build/reports/detekt-idea"
+        mask = "*.kt,"
+    }
 }
 
 dependencies {
