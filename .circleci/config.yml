@@ -12,8 +12,11 @@ jobs:
       APPLICATION_ID: com.ebdz.ble
 
     steps:
+      - run:
+        name: remove local settings
+        command: rm local.properties
       - checkout
-
+      
       # Restore cached dependencies (if any)
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
