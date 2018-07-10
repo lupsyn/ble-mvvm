@@ -8,7 +8,7 @@ jobs:
       - image: circleci/android:api-28-alpha
 
     environment:
-      ANDROID_HOME: /usr/local/android-sdk-linux
+      ANDROID_HOME: /opt/android/sdk
       APPLICATION_ID: com.ebdz.ble
 
     steps:
@@ -36,11 +36,11 @@ jobs:
       - save_cache:
           paths:
             # Android SDK
-            - /usr/local/android-sdk-linux/tools
-            - /usr/local/android-sdk-linux/platform-tools
-            - /usr/local/android-sdk-linux/build-tools
-            - /usr/local/android-sdk-linux/licenses
-            - /usr/local/android-sdk-linux/extras/google/m2repository
+            - /opt/android/sdk/tools
+            - /opt/android/sdk/platform-tools
+            - /opt/android/sdk/build-tools
+            - /opt/android/sdk/licenses
+            - /opt/android/sdk/extras/google/m2repository
 
             # Gradle dependencies
             - ~/.gradle
