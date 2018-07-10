@@ -2,13 +2,13 @@ version: 2
 
 jobs:
   build:
-    working_directory: ~/ble-mvvm
+    working_directory: ~/ble-mvvm/
 
     docker:
-      - image: circleci/android:api-28-node8-alpha
+      - image: circleci/android:api-27-alpha
 
     environment:
-      ANDROID_HOME: /opt/android/sdk
+      ANDROID_HOME: /usr/local/android-sdk-linux
       APPLICATION_ID: com.ebdz.ble
 
     steps:
@@ -16,7 +16,7 @@ jobs:
         name: remove local settings
         command: rm local.properties
       - checkout
-      
+
       # Restore cached dependencies (if any)
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
