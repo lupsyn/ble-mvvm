@@ -5,17 +5,17 @@ jobs:
     working_directory: ~/ble-mvvm/
 
     docker:
-      - image: circleci/android:api-27-alpha
+      - image: circleci/android:api-28-alpha
 
     environment:
       ANDROID_HOME: /usr/local/android-sdk-linux
       APPLICATION_ID: com.ebdz.ble
 
     steps:
-      - run:
-        name: remove local settings
-        command: rm local.properties
       - checkout
+      - run:
+          name: remove local settings
+          command: rm local.properties
 
       # Restore cached dependencies (if any)
       - restore_cache:
